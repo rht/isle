@@ -1,0 +1,27 @@
+dist:trusty
+sudo: false
+language: python
+
+cache:
+    pip: true
+    directories:
+    - $HOME/Library/Caches/pip
+
+matrix:
+  include:
+    - os: python: 3.6
+    - os: osx
+      osx_image: xcode10
+      sudo: required
+      language: generic
+      before_install:
+      - pip install virtualenv
+      # This will use python 3.7
+      - virtualenv env -p python3
+      - source env/bin/activate
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - python start.py
