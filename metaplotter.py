@@ -128,32 +128,33 @@ def plotting(output_label, timeseries_dict, riskmodelsetting1, riskmodelsetting2
     plt.savefig(outputfilename)
     plt.show()
 
-timeseries = read_data()
+if __name__ == "__main__":
+    timeseries = read_data()
 
-# for just two different riskmodel settings
-plotting(output_label="fig_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
-    riskmodelsetting2="two", series1="contracts", series2="operational", plottype1="mean", plottype2="median")
-plotting(output_label="fig_reinsurers_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
-    riskmodelsetting2="two", series1="reincontracts", series2="reinoperational", plottype1="mean", plottype2="median")
-plotting(output_label="fig_premium_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", riskmodelsetting2="two", \
-    series1="premium", series2=None, plottype1="mean", plottype2=None)
+    # for just two different riskmodel settings
+    plotting(output_label="fig_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
+        riskmodelsetting2="two", series1="contracts", series2="operational", plottype1="mean", plottype2="median")
+    plotting(output_label="fig_reinsurers_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
+        riskmodelsetting2="two", series1="reincontracts", series2="reinoperational", plottype1="mean", plottype2="median")
+    plotting(output_label="fig_premium_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", riskmodelsetting2="two", \
+        series1="premium", series2=None, plottype1="mean", plottype2=None)
 
-raise SystemExit
-# for four different riskmodel settings
-plotting(output_label="fig_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
-        riskmodelsetting2="two", series1="contracts", series2="operational", additionalriskmodelsetting3="three", \
-        additionalriskmodelsetting4="four", plottype1="mean", plottype2="median")
-plotting(output_label="fig_contracts_survival_3_4", timeseries_dict=timeseries, riskmodelsetting1="three", \
-        riskmodelsetting2="four", series1="contracts", series2="operational",  additionalriskmodelsetting3="one", \
-        additionalriskmodelsetting4="two", plottype1="mean", plottype2="median")
-plotting(output_label="fig_reinsurers_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
-        riskmodelsetting2="two", series1="reincontracts", series2="reinoperational", \
-        additionalriskmodelsetting3="three", additionalriskmodelsetting4="four", plottype1="mean", plottype2="median")
-plotting(output_label="fig_reinsurers_contracts_survival_3_4", timeseries_dict=timeseries, riskmodelsetting1="three", \
-        riskmodelsetting2="four", series1="reincontracts", series2="reinoperational", \
-        additionalriskmodelsetting3="one", additionalriskmodelsetting4="two", plottype1="mean", plottype2="median")
-plotting(output_label="fig_premium_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", riskmodelsetting2="two", \
-        series1="premium", series2=None, additionalriskmodelsetting3="three", additionalriskmodelsetting4="four", \
-        plottype1="mean", plottype2=None)
+    raise SystemExit
+    # for four different riskmodel settings
+    plotting(output_label="fig_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
+            riskmodelsetting2="two", series1="contracts", series2="operational", additionalriskmodelsetting3="three", \
+            additionalriskmodelsetting4="four", plottype1="mean", plottype2="median")
+    plotting(output_label="fig_contracts_survival_3_4", timeseries_dict=timeseries, riskmodelsetting1="three", \
+            riskmodelsetting2="four", series1="contracts", series2="operational",  additionalriskmodelsetting3="one", \
+            additionalriskmodelsetting4="two", plottype1="mean", plottype2="median")
+    plotting(output_label="fig_reinsurers_contracts_survival_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", \
+            riskmodelsetting2="two", series1="reincontracts", series2="reinoperational", \
+            additionalriskmodelsetting3="three", additionalriskmodelsetting4="four", plottype1="mean", plottype2="median")
+    plotting(output_label="fig_reinsurers_contracts_survival_3_4", timeseries_dict=timeseries, riskmodelsetting1="three", \
+            riskmodelsetting2="four", series1="reincontracts", series2="reinoperational", \
+            additionalriskmodelsetting3="one", additionalriskmodelsetting4="two", plottype1="mean", plottype2="median")
+    plotting(output_label="fig_premium_1_2", timeseries_dict=timeseries, riskmodelsetting1="one", riskmodelsetting2="two", \
+            series1="premium", series2=None, additionalriskmodelsetting3="three", additionalriskmodelsetting4="four", \
+            plottype1="mean", plottype2=None)
 
-#pdb.set_trace()
+    #pdb.set_trace()

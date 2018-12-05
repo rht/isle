@@ -5,63 +5,8 @@ import os
 import time
 import glob
 
-def read_data():
-    # do not overwrite old pdfs
-    #if os.path.exists("data/fig_one_and_two_rm_comp.pdf"):
-    #    os.rename("data/fig_one_and_two_rm_comp.pdf", "data/fig_one_and_two_rm_comp_old_" + time.strftime('%Y_%b_%d_%H_%M') + ".pdf")
-    #if os.path.exists("data/fig_three_and_four_rm_comp.pdf"):
-    #    os.rename("data/fig_three_and_four_rm_comp.pdf", "data/fig_three_and_four_rm_comp_old_" + time.strftime('%Y_%b_%d_%H_%M') + ".pdf")
+from metaplotter import read_data
 
-    upper_bound = 75
-    lower_bound = 25
-
-    timeseries_dict = {}
-    timeseries_dict["mean"] = {}
-    timeseries_dict["median"] = {}
-    timeseries_dict["quantile25"] = {}
-    timeseries_dict["quantile75"] = {}
-
-    filenames_ones = glob.glob("data/one*.dat")
-    filenames_twos = glob.glob("data/two*.dat")
-    filenames_threes = glob.glob("data/three*.dat")
-    filenames_fours = glob.glob("data/four*.dat")
-    filenames_ones.sort()
-    filenames_twos.sort()
-    filenames_threes.sort()
-    filenames_fours.sort()
-
-    #assert len(filenames_ones) == len(filenames_twos) == len(filenames_threes) == len(filenames_fours)
-    all_filenames = filenames_ones + filenames_twos + filenames_threes + filenames_fours
-
-    for filename in all_filenames:
-        # read files
-        rfile = open(filename, "r")
-        data = [eval(k) for k in rfile]
-        rfile.close()
-        
-        # compute data series
-        data_means = []
-        data_medians = []
-        data_q25 = []
-        data_q75 = []
-        for i in range(len(data[0])):
-            data_means.append(np.mean([item[i] for item in data]))
-            data_q25.append(np.percentile([item[i] for item in data], lower_bound))
-            data_q75.append(np.percentile([item[i] for item in data], upper_bound))
-            data_medians.append(np.median([item[i] for item in data]))
-        data_means = np.array(data_means)
-        data_medians = np.array(data_medians)
-        data_q25 = np.array(data_q25)
-        data_q75 = np.array(data_q75)
-        
-        # record data series
-        timeseries_dict["mean"][filename] = data_means
-        timeseries_dict["median"][filename] = data_medians
-        timeseries_dict["quantile25"][filename] = data_q25
-        timeseries_dict["quantile75"][filename] = data_q75
-    return timeseries_dict
-        
-    
 
 def plotting(output_label, timeseries_dict, riskmodelsetting1, riskmodelsetting2, series1, series2=None, additionalriskmodelsetting3=None, additionalriskmodelsetting4=None, plottype1="mean", plottype2="mean"):
     # dictionaries
