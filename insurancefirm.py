@@ -1,4 +1,4 @@
-from metainsuranceorg import MetaInsuranceOrg
+from agents.metainsuranceorg import MetaInsuranceOrg
 from catbond import CatBond
 import numpy as np
 from reinsurancecontract import ReinsuranceContract
