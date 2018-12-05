@@ -4,7 +4,7 @@ import numpy as np
 import scipy.stats
 from insurancecontract import InsuranceContract
 from reinsurancecontract import ReinsuranceContract
-from metainsuranceorg import MetaInsuranceOrg
+from agents.metainsuranceorg import MetaInsuranceOrg
 from riskmodel import RiskModel
 import sys, pdb
 import uuid
