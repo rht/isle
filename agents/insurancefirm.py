@@ -1,7 +1,7 @@
 from agents.metainsuranceorg import MetaInsuranceOrg
 from agents.catbond import CatBond
 import numpy as np
-from reinsurancecontract import ReinsuranceContract
+from contracts.reinsurancecontract import ReinsuranceContract
 import isleconfig
 
 class InsuranceFirm(MetaInsuranceOrg):

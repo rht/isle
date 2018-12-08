@@ -4,7 +4,7 @@ import numpy as np
 import scipy.stats
 import copy
 from contracts.insurancecontract import InsuranceContract
-from reinsurancecontract import ReinsuranceContract
+from contracts.reinsurancecontract import ReinsuranceContract
 from riskmodel import RiskModel
 import sys, pdb
 import uuid
