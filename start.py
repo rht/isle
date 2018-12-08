@@ -21,7 +21,7 @@ override_no_riskmodels = False
 from insurancesimulation import InsuranceSimulation
 from agents.insurancefirm import InsuranceFirm
 from riskmodel import RiskModel
-from reinsurancefirm import ReinsuranceFirm
+from agents.reinsurancefirm import ReinsuranceFirm
 import logger
 import calibrationscore
     
