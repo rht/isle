@@ -13,7 +13,7 @@ if isleconfig.use_abce:
     from genericagentabce import GenericAgent
     #print("abce imported")
 else:
-    from genericagent import GenericAgent
+    from agents.genericagent import GenericAgent
     #print("abce not imported")
 
 def get_mean(x):
