@@ -3,7 +3,7 @@ import isleconfig
 import numpy as np
 import scipy.stats
 from contracts.insurancecontract import InsuranceContract
-from reinsurancecontract import ReinsuranceContract
+from contracts.reinsurancecontract import ReinsuranceContract
 from agents.metainsuranceorg import MetaInsuranceOrg
 from riskmodel import RiskModel
 import sys, pdb
