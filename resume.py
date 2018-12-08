@@ -62,7 +62,7 @@ if isleconfig.use_abce:
 from insurancesimulation import InsuranceSimulation
 from agents.insurancefirm import InsuranceFirm
 from riskmodel import RiskModel
-from reinsurancefirm import ReinsuranceFirm
+from agents.reinsurancefirm import ReinsuranceFirm
 
 # create conditional decorator
 def conditionally(decorator_function, condition):

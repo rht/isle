@@ -1,6 +1,6 @@
 from agents.insurancefirm import InsuranceFirm
 #from riskmodel import RiskModel
-from reinsurancefirm import ReinsuranceFirm
+from agents.reinsurancefirm import ReinsuranceFirm
 from distributiontruncated import TruncatedDistWrapper
 import numpy as np
 import scipy.stats
