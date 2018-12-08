@@ -10,7 +10,7 @@ import sys, pdb
 import uuid
 
 if isleconfig.use_abce:
-    from genericagentabce import GenericAgent
+    from agents.genericagentabce import GenericAgent
     #print("abce imported")
 else:
     from agents.genericagent import GenericAgent
