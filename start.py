@@ -19,7 +19,7 @@ replic_ID = None
 override_no_riskmodels = False
 
 from insurancesimulation import InsuranceSimulation
-from insurancefirm import InsuranceFirm
+from agents.insurancefirm import InsuranceFirm
 from riskmodel import RiskModel
 from reinsurancefirm import ReinsuranceFirm
 import logger

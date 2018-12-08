@@ -1,5 +1,5 @@
 #from agents.metainsuranceorg import MetaInsuranceOrg
-from insurancefirm import InsuranceFirm
+from agents.insurancefirm import InsuranceFirm
 
 class ReinsuranceFirm(InsuranceFirm):
     """ReinsuranceFirm class. 
