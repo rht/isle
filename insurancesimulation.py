@@ -1,4 +1,4 @@
-from insurancefirm import InsuranceFirm
+from agents.insurancefirm import InsuranceFirm
 #from riskmodel import RiskModel
 from reinsurancefirm import ReinsuranceFirm
 from distributiontruncated import TruncatedDistWrapper

@@ -60,7 +60,7 @@ if isleconfig.use_abce:
     from abce import gui
 
 from insurancesimulation import InsuranceSimulation
-from insurancefirm import InsuranceFirm
+from agents.insurancefirm import InsuranceFirm
 from riskmodel import RiskModel
 from reinsurancefirm import ReinsuranceFirm
 
