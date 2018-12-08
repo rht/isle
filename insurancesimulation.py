@@ -123,18 +123,19 @@ class InsuranceSimulation():
 
         self.inaccuracy = random.sample(self.inaccuracy, self.simulation_parameters["no_riskmodels"])
 
-        risk_model_configurations = [{"damage_distribution": self.damage_distribution,
-                                      "expire_immediately": self.simulation_parameters["expire_immediately"],
-                                      "cat_separation_distribution": self.cat_separation_distribution,
-                                      "norm_premium": self.norm_premium,
-                                      "no_categories": self.simulation_parameters["no_categories"],
-                                      "risk_value_mean": risk_value_mean,
-                                      "risk_factor_mean": risk_factor_mean,
-                                      "norm_profit_markup": self.simulation_parameters["norm_profit_markup"],
-                                      "margin_of_safety": self.simulation_parameters["riskmodel_margin_of_safety"],
-                                      "var_tail_prob": self.simulation_parameters["value_at_risk_tail_probability"],
-                                      "inaccuracy_by_categ": self.inaccuracy[i]} \
-                                      for i in range(self.simulation_parameters["no_riskmodels"])]
+        risk_model_configurations = [
+            {"damage_distribution": self.damage_distribution,
+             "expire_immediately": self.simulation_parameters["expire_immediately"],
+             "cat_separation_distribution": self.cat_separation_distribution,
+             "norm_premium": self.norm_premium,
+             "category_number": self.simulation_parameters["no_categories"],
+             "init_average_exposure": risk_value_mean,
+             "init_average_risk_factor": risk_factor_mean,
+             "init_profit_estimate": self.simulation_parameters["norm_profit_markup"],
+             "margin_of_safety": self.simulation_parameters["riskmodel_margin_of_safety"],
+             "var_tail_prob": self.simulation_parameters["value_at_risk_tail_probability"],
+             "inaccuracy": self.inaccuracy[i]}
+             for i in range(self.simulation_parameters["no_riskmodels"])]
         
         # prepare setting up agents (to be done from start.py)
         self.agent_parameters = {"insurancefirm": [], "reinsurance": []}    # TODO: rename reinsurance -> reinsurancefirm (also in start.py and below in method accept_agents
