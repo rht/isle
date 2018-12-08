@@ -3,7 +3,7 @@ import isleconfig
 import numpy as np
 import scipy.stats
 import copy
-from insurancecontract import InsuranceContract
+from contracts.insurancecontract import InsuranceContract
 from reinsurancecontract import ReinsuranceContract
 from riskmodel import RiskModel
 import sys, pdb
