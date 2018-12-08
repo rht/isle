@@ -1,5 +1,5 @@
 from agents.metainsuranceorg import MetaInsuranceOrg
-from catbond import CatBond
+from agents.catbond import CatBond
 import numpy as np
 from reinsurancecontract import ReinsuranceContract
 import isleconfig
