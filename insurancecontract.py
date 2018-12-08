@@ -1,6 +1,6 @@
 import numpy as np
 
-from metainsurancecontract import MetaInsuranceContract
+from contracts.metainsurancecontract import MetaInsuranceContract
 
 
 class InsuranceContract(MetaInsuranceContract):
