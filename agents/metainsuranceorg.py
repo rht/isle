@@ -55,17 +55,7 @@ class MetaInsuranceOrg(GenericAgent):
         self.cash_last_periods = list(np.zeros(4, dtype=int)*self.cash)
         
         rm_config = agent_parameters['riskmodel_config']
-        self.riskmodel = RiskModel(damage_distribution=rm_config["damage_distribution"], \
-                                     expire_immediately=rm_config["expire_immediately"], \
-                                     cat_separation_distribution=rm_config["cat_separation_distribution"], \
-                                     norm_premium=rm_config["norm_premium"], \
-                                     category_number=rm_config["no_categories"], \
-                                     init_average_exposure=rm_config["risk_value_mean"], \
-                                     init_average_risk_factor=rm_config["risk_factor_mean"], \
-                                     init_profit_estimate=rm_config["norm_profit_markup"], \
-                                     margin_of_safety=rm_config["margin_of_safety"], \
-                                     var_tail_prob=rm_config["var_tail_prob"], \
-                                     inaccuracy=rm_config["inaccuracy_by_categ"])
+        self.riskmodel = RiskModel(**rm_config)
         
         self.category_reinsurance = [None for i in range(self.simulation_no_risk_categories)]
         if self.simulation_reinsurance_type == 'non-proportional':
