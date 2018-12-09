@@ -81,9 +81,9 @@ class Logger():
         """Method to transfer entire log (self.history_log as well as risk event schedule). This is
            used to transfer the log to master core from work cores in ensemble runs in the cloud.
             No arguments.
-            Returns list."""
+            Returns dict."""
         
-        """ TODO: change this to a dict. For now the sequence of the list is:
+        """
                 [0]: 'total_cash'
                 [1]: 'total_excess_capital'
                 [2]: 'total_profitslosses'
@@ -108,11 +108,10 @@ class Logger():
                 [21]: rc_event_damage_initial
                 [22]: number_riskmodels
         """
-        log = [self.history_logs[name] for name in LOG_ORDER]
-
-        log.append(self.rc_event_schedule_initial)
-        log.append(self.rc_event_damage_initial)
-        log.append(self.number_riskmodels)
+        log = {name: self.history_logs[name] for name in LOG_ORDER}
+        log['rc_event_schedule_initial'] = self.rc_event_schedule_initial
+        log['rc_event_damage_initial'] = self.rc_event_damage_initial
+        log['number_riskmodels'] = self.number_riskmodels
 
         return log
     
@@ -121,35 +120,13 @@ class Logger():
            on a different machine. This is useful in the case of ensemble runs to move the log to
            the master node from the computation nodes.
             Arguments:
-                log - list - The log in the order as follows:
-                [0]: 'total_cash'
-                [1]: 'total_excess_capital'
-                [2]: 'total_profitslosses'
-                [3]: 'total_contracts'
-                [4]: 'total_operational'
-                [5]: 'total_reincash'
-                [6]: 'total_reinexcess_capital'
-                [7]: 'total_reinprofitslosses'
-                [8]: 'total_reincontracts'
-                [9]: 'total_reinoperational'
-                [10]: 'total_catbondsoperational'
-                [11]: 'market_premium'
-                [12]: 'market_reinpremium'
-                [13]: 'cumulative_bankruptcies'
-                [14]: 'cumulative_unrecovered_claims'
-                [15]: 'cumulative_claims'
-                [16]: 'insurance_firms_cash'
-                [17]: 'reinsurance_firms_cash'
-                [18]: 'market_diffvar'
-                [19]: rc_event_schedule_initial
-                [20]: rc_event_damage_initial                
-                [21]: number_riskmodels
+                log - dict - see obtain_log()
             Returns None."""
-        for i in range(20):
-            self.history_logs[LOG_ORDER[i]] = log[i]
-        self.rc_event_schedule_initial = log[20]
-        self.rc_event_damage_initial = log[21]
-        self.number_riskmodels = log[22]
+        for ln in LOG_ORDER:
+            self.history_logs[ln] = log[ln]
+        self.rc_event_schedule_initial = log['rc_event_schedule_initial']
+        self.rc_event_damage_initial = log['rc_event_damage_initial']
+        self.number_riskmodels = log['number_riskmodels']
         
 
     def save_log(self, background_run):
