@@ -24,6 +24,15 @@ def get_mean_std(x):
     variance = sum((val - m) ** 2 for val in x)
     return m, np.sqrt(variance / len(x))
 
+class Obligation:
+    __slots__ = 'amount', 'recipient', 'due_time', 'purpose'
+
+    def __init__(self, amount, recipient, due_time, purpose):
+        self.amount = amount
+        self.recipient = recipient
+        self.due_time = due_time
+        self.purpose = purpose
+
 class MetaInsuranceOrg(GenericAgent):
     def init(self, simulation_parameters, agent_parameters):
         self.simulation = simulation_parameters['simulation']
@@ -261,7 +270,7 @@ class MetaInsuranceOrg(GenericAgent):
         self.simulation.return_risks(self.risks_kept)
         self.risks_kept = []
         self.reinrisks_kept = []
-        obligation = {"amount": self.cash, "recipient": self.simulation, "due_time": time, "purpose": "Dissolution"}
+        obligation = Obligation(self.cash, self.simulation, time, "Dissolution")
         self.pay(obligation)                    #This MUST be the last obligation before the dissolution of the firm.
         self.excess_capital = 0                 #Excess of capital is 0 after bankruptcy or market exit.
         self.profits_losses = 0                 #Profits and losses are 0 after bankruptcy or market exit.
@@ -271,13 +280,13 @@ class MetaInsuranceOrg(GenericAgent):
         self.operational = False
 
     def receive_obligation(self, amount, recipient, due_time, purpose):
-        obligation = {"amount": amount, "recipient": recipient, "due_time": due_time, "purpose": purpose}
+        obligation = Obligation(amount, recipient, due_time, purpose)
         self.obligations.append(obligation)
 
     def effect_payments(self, time):
-        due = [item for item in self.obligations if item["due_time"]<=time]
-        self.obligations = [item for item in self.obligations if item["due_time"]>time]
-        sum_due = sum([item["amount"] for item in due])
+        due = [item for item in self.obligations if item.due_time <=time]
+        self.obligations = [item for item in self.obligations if item.due_time >time]
+        sum_due = sum([item.amount for item in due])
         if sum_due > self.cash:
             self.obligations += due
             self.enter_illiquidity(time)
@@ -290,14 +299,12 @@ class MetaInsuranceOrg(GenericAgent):
 
 
     def pay(self, obligation):
-        amount = obligation["amount"]
-        recipient = obligation["recipient"]
-        purpose = obligation["purpose"]
-        if self.get_operational() and recipient.get_operational():
+        amount = obligation.amount
+        if self.get_operational() and obligation.recipient.get_operational():
             self.cash -= amount
-            if purpose is not 'dividend':
+            if obligation.purpose is not 'dividend':
                 self.profits_losses -= amount
-            recipient.receive(amount)
+            obligation.recipient.receive(amount)
 
     def receive(self, amount):
         """Method to accept cash payments."""
