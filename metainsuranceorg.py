@@ -96,6 +96,7 @@ class MetaInsuranceOrg(GenericAgent):
         self.recursion_limit = simulation_parameters['insurers_recursion_limit']
         self.cash_left_by_categ = [self.cash for i in range(self.simulation_parameters["no_categories"])]
         self.market_permanency_counter = 0
+        self.marked_as_bankrupt = False
 
     def iterate(self, time):        # TODO: split function so that only the sequence of events remains here and everything else is in separate methods
 
@@ -208,6 +209,20 @@ class MetaInsuranceOrg(GenericAgent):
             
         self.estimated_var()
 
+        if self.marked_as_bankrupt:
+            sum_due = sum([item["amount"] for item in self.__due])
+            if sum_due > self.cash:
+                self.obligations += self.__due
+                self.enter_illiquidity(time)
+                self.simulation.record_unrecovered_claims(sum_due - self.cash)
+                # TODO: is this record of uncovered claims correct or should it be sum_due (since the company is impounded and self.cash will also not be paid out for quite some time)?
+                # TODO: effect partial payment
+            else:
+                self.marked_as_bankrupt = False
+                for obligation in self.__due:
+                    self.pay(obligation)
+                self.__due = []
+
     def enter_illiquidity(self, time):
         """Enter_illiquidity Method.
                Accepts arguments
@@ -279,11 +294,8 @@ class MetaInsuranceOrg(GenericAgent):
         self.obligations = [item for item in self.obligations if item["due_time"]>time]
         sum_due = sum([item["amount"] for item in due])
         if sum_due > self.cash:
-            self.obligations += due
-            self.enter_illiquidity(time)
-            self.simulation.record_unrecovered_claims(sum_due - self.cash)
-            # TODO: is this record of uncovered claims correct or should it be sum_due (since the company is impounded and self.cash will also not be paid out for quite some time)?
-            # TODO: effect partial payment
+            self.__due = due
+            self.marked_as_bankrupt = True
         else:
             for obligation in due:
                 self.pay(obligation)
