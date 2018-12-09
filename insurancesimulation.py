@@ -141,47 +141,32 @@ class InsuranceSimulation():
         self.agent_parameters = {"insurancefirm": [], "reinsurance": []}    # TODO: rename reinsurance -> reinsurancefirm (also in start.py and below in method accept_agents
 
         self.insurer_id_counter = 0
-        # TODO: collapse the following two loops into one generic one?
-        for i in range(simulation_parameters["no_insurancefirms"]):
-            if simulation_parameters['static_non-proportional_reinsurance_levels']:
-                insurance_reinsurance_level = simulation_parameters["default_non-proportional_reinsurance_deductible"]
-            else:
-                insurance_reinsurance_level = np.random.uniform(simulation_parameters["insurance_reinsurance_levels_lower_bound"], simulation_parameters["insurance_reinsurance_levels_upper_bound"])
-
-            riskmodel_config = risk_model_configurations[i % len(risk_model_configurations)]
-            self.agent_parameters["insurancefirm"].append({'id': self.get_unique_insurer_id(), 'initial_cash': simulation_parameters["initial_agent_cash"],
-                                     'riskmodel_config': riskmodel_config, 'norm_premium': self.norm_premium,
-                                     'profit_target': simulation_parameters["norm_profit_markup"],
-                                     'initial_acceptance_threshold': simulation_parameters["initial_acceptance_threshold"],
-                                     'acceptance_threshold_friction': simulation_parameters["acceptance_threshold_friction"],
-                                     'reinsurance_limit': simulation_parameters["reinsurance_limit"],
-                                     'non-proportional_reinsurance_level': insurance_reinsurance_level,
-                                     'capacity_target_decrement_threshold': simulation_parameters['capacity_target_decrement_threshold'],
-                                     'capacity_target_increment_threshold': simulation_parameters['capacity_target_increment_threshold'],
-                                     'capacity_target_decrement_factor': simulation_parameters['capacity_target_decrement_factor'],
-                                     'capacity_target_increment_factor': simulation_parameters['capacity_target_increment_factor'],
-                                     'interest_rate': simulation_parameters["interest_rate"]})
-
         self.reinsurer_id_counter = 0
-        for i in range(simulation_parameters["no_reinsurancefirms"]):
-            if simulation_parameters['static_non-proportional_reinsurance_levels']:
-                reinsurance_reinsurance_level = simulation_parameters["default_non-proportional_reinsurance_deductible"]
-            else:
-                reinsurance_reinsurance_level = np.random.uniform(simulation_parameters["reinsurance_reinsurance_levels_lower_bound"], simulation_parameters["reinsurance_reinsurance_levels_upper_bound"])
 
-            riskmodel_config = risk_model_configurations[i % len(risk_model_configurations)]
-            self.agent_parameters["reinsurance"].append({'id': self.get_unique_reinsurer_id(), 'initial_cash': simulation_parameters["initial_reinagent_cash"],
-                                'riskmodel_config': riskmodel_config, 'norm_premium': self.norm_premium,
-                                'profit_target': simulation_parameters["norm_profit_markup"],
-                                'initial_acceptance_threshold': simulation_parameters["initial_acceptance_threshold"],
-                                'acceptance_threshold_friction': simulation_parameters["acceptance_threshold_friction"],
-                                'reinsurance_limit': simulation_parameters["reinsurance_limit"],
-                                'non-proportional_reinsurance_level': reinsurance_reinsurance_level,
-                                'capacity_target_decrement_threshold': simulation_parameters['capacity_target_decrement_threshold'],
-                                'capacity_target_increment_threshold': simulation_parameters['capacity_target_increment_threshold'],
-                                'capacity_target_decrement_factor': simulation_parameters['capacity_target_decrement_factor'],
-                                'capacity_target_increment_factor': simulation_parameters['capacity_target_increment_factor'],
-                                'interest_rate': simulation_parameters["interest_rate"]})
+        for a_type in ["insurance", "reinsurance"]:
+            _n = "no_" + a_type + "firms"
+            for i in range(simulation_parameters[_n]):
+                if simulation_parameters['static_non-proportional_reinsurance_levels']:
+                    reinsurance_level = simulation_parameters["default_non-proportional_reinsurance_deductible"]
+                else:
+                    reinsurance_level = np.random.uniform(simulation_parameters[a_type + "_reinsurance_levels_lower_bound"], simulation_parameters[a_type + "_reinsurance_levels_upper_bound"])
+
+                riskmodel_config = risk_model_configurations[i % len(risk_model_configurations)]
+                self.agent_parameters[a_type + "firm"].append({
+                    'id': self.get_unique_insurer_id(), 'initial_cash': simulation_parameters["initial_agent_cash"],
+                    'riskmodel_config': riskmodel_config, 'norm_premium': self.norm_premium,
+                    'profit_target': simulation_parameters["norm_profit_markup"],
+                    'initial_acceptance_threshold': simulation_parameters["initial_acceptance_threshold"],
+                    'acceptance_threshold_friction': simulation_parameters["acceptance_threshold_friction"],
+                    'reinsurance_limit': simulation_parameters["reinsurance_limit"],
+                    'non-proportional_reinsurance_level': reinsurance_level,
+                    'capacity_target_decrement_threshold': simulation_parameters['capacity_target_decrement_threshold'],
+                    'capacity_target_increment_threshold': simulation_parameters['capacity_target_increment_threshold'],
+                    'capacity_target_decrement_factor': simulation_parameters['capacity_target_decrement_factor'],
+                    'capacity_target_increment_factor': simulation_parameters['capacity_target_increment_factor'],
+                    'interest_rate': simulation_parameters["interest_rate"]})
+
+
                                 
         # set up remaining list variables
         
