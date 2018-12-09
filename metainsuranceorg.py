@@ -33,8 +33,31 @@ class Obligation:
         self.due_time = due_time
         self.purpose = purpose
 
-class MetaInsuranceOrg(GenericAgent):
+class Messenger:
+    def __init__(self):
+        self.obligations = []
+
+    def receive_obligation(self, amount, recipient, due_time, purpose):
+        obligation = Obligation(amount, recipient, due_time, purpose)
+        self.obligations.append(obligation)
+
+    def pay(self, obligation):
+        amount = obligation.amount
+        if self.get_operational() and obligation.recipient.get_operational():
+            self.cash -= amount
+            if obligation.purpose is not 'dividend':
+                self.profits_losses -= amount
+            obligation.recipient.receive(amount)
+
+    def refresh_obligations(self, time):
+        self.obligations = [o for o in self.obligations if o.due_time > time]
+
+    def get_due_obligations(self, time):
+        return [o for o in self.obligations if o.due_time <= time]
+
+class MetaInsuranceOrg(GenericAgent, Messenger):
     def init(self, simulation_parameters, agent_parameters):
+        Messenger.__init__(self)
         self.simulation = simulation_parameters['simulation']
         self.simulation_parameters = simulation_parameters
         self.contract_runtime_dist = scipy.stats.randint(simulation_parameters["mean_contract_runtime"] - \
@@ -84,7 +107,6 @@ class MetaInsuranceOrg(GenericAgent):
                 self.np_reinsurance_deductible_fraction = simulation_parameters["default_non-proportional_reinsurance_deductible"]
             self.np_reinsurance_excess_fraction = simulation_parameters["default_non-proportional_reinsurance_excess"]
             self.np_reinsurance_premium_share = simulation_parameters["default_non-proportional_reinsurance_premium_share"]
-        self.obligations = []
         self.underwritten_contracts = []
         self.profits_losses = 0
         #self.reinsurance_contracts = []
@@ -247,8 +269,7 @@ class MetaInsuranceOrg(GenericAgent):
            method of this class. It needs to be different from the method self.enter_bankruptcy() because in this case
            all the obligations can be paid. After paying all the obligations this method dissolves the firm through the
            method self.dissolve()."""
-        due = [item for item in self.obligations]
-        for obligation in due:
+        for obligation in self.obligations:
             self.pay(obligation)
         self.obligations = []
         self.dissolve(time, 'record_market_exit')
@@ -279,13 +300,9 @@ class MetaInsuranceOrg(GenericAgent):
             method_to_call()
         self.operational = False
 
-    def receive_obligation(self, amount, recipient, due_time, purpose):
-        obligation = Obligation(amount, recipient, due_time, purpose)
-        self.obligations.append(obligation)
-
     def effect_payments(self, time):
-        due = [item for item in self.obligations if item.due_time <=time]
-        self.obligations = [item for item in self.obligations if item.due_time >time]
+        due = self.get_due_obligations(time)
+        self.refresh_obligations(time)
         sum_due = sum([item.amount for item in due])
         if sum_due > self.cash:
             self.obligations += due
@@ -297,14 +314,6 @@ class MetaInsuranceOrg(GenericAgent):
             for obligation in due:
                 self.pay(obligation)
 
-
-    def pay(self, obligation):
-        amount = obligation.amount
-        if self.get_operational() and obligation.recipient.get_operational():
-            self.cash -= amount
-            if obligation.purpose is not 'dividend':
-                self.profits_losses -= amount
-            obligation.recipient.receive(amount)
 
     def receive(self, amount):
         """Method to accept cash payments."""
