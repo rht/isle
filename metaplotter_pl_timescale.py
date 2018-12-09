@@ -8,10 +8,11 @@ import glob
 from metaplotter import read_data
 
 
-def plotting(output_label, timeseries_dict, riskmodelsetting1, riskmodelsetting2, series1, series2=None, additionalriskmodelsetting3=None, additionalriskmodelsetting4=None, plottype1="mean", plottype2="mean"):
+def plotting(output_label, timeseries_dict, riskmodelsetting1, riskmodelsetting2, series1, series2=None, additionalriskmodelsetting3=None, additionalriskmodelsetting4=None, plottype1="mean", plottype2="mean", labels=None):
     # dictionaries
     colors = {"one": "red", "two": "blue", "three": "green", "four": "yellow"}
-    labels = {"profitslosses": "Profits and Losses (Insurer)", "contracts": "Contracts (Insurers)", "cash": "Liquidity (Insurers)", "operational": "Active Insurers", "premium": "Premium", "reinprofitslosses": "Profits and Losses (Reinsurer)", "reincash": "Liquidity (Reinsurers)", "reincontracts": "Contracts (Reinsurers)", "reinoperational": "Active Reinsurers"}
+    if labels is None:
+        labels = {"profitslosses": "Profits and Losses (Insurer)", "contracts": "Contracts (Insurers)", "cash": "Liquidity (Insurers)", "operational": "Active Insurers", "premium": "Premium", "reinprofitslosses": "Profits and Losses (Reinsurer)", "reincash": "Liquidity (Reinsurers)", "reincontracts": "Contracts (Reinsurers)", "reinoperational": "Active Reinsurers"}
     
     # prepare labels, timeseries, etc.
     color1 = colors[riskmodelsetting1]
