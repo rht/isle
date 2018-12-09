@@ -210,12 +210,8 @@ class InsuranceSimulation():
     def accept_agents(self, agent_class_string, agents, agent_group=None, time=0):
         # TODO: fix agent id's for late entrants (both firms and catbonds)
         if agent_class_string == "insurancefirm":
-            try:
-                self.insurancefirms += agents
-                self.insurancefirms_group = agent_group
-            except:
-                print(sys.exc_info())
-                pdb.set_trace()
+            self.insurancefirms += agents
+            self.insurancefirms_group = agent_group
             # fix self.history_logs['individual_contracts'] list
             for agent in agents:
                 self.logger.add_insurance_agent()
@@ -223,21 +219,13 @@ class InsuranceSimulation():
             new_agent_cash = sum([agent.cash for agent in agents])
             self.reduce_money_supply(new_agent_cash)
         elif agent_class_string == "reinsurance":
-            try:
-                self.reinsurancefirms += agents
-                self.reinsurancefirms_group = agent_group
-            except:
-                print(sys.exc_info())
-                pdb.set_trace()
+            self.reinsurancefirms += agents
+            self.reinsurancefirms_group = agent_group
             # remove new agent cash from simulation cash to ensure stock flow consistency
             new_agent_cash = sum([agent.cash for agent in agents])
             self.reduce_money_supply(new_agent_cash)
         elif agent_class_string == "catbond":
-            try:
-                self.catbonds += agents
-            except:
-                print(sys.exc_info())
-                pdb.set_trace()            
+            self.catbonds += agents
         else:
             assert False, "Error: Unexpected agent class used {0:s}".format(agent_class_string)
 
