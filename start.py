@@ -169,7 +169,7 @@ def save_simulation(t, sim, sim_param, exit_now=False):
         exit(0)
 
 # main entry point
-if __name__ == "__main__":
+def entry_point(passed_args=None):
 
     """ use argparse to handle command line arguments"""
     parser = argparse.ArgumentParser(description='Model the Insurance sector')
@@ -189,7 +189,8 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--showprogress", action="store_true", help="show timesteps")
     parser.add_argument("-v", "--verbose", action="store_true", help="more detailed output")
     parser.add_argument("--save_iterations", type=int, help="number of iterations to iterate before saving world state")
-    args = parser.parse_args()
+    parser.add_argument("--multiprocess", action="store_true", help="run this script as part of a parallel computation")
+    args = parser.parse_args(passed_args)
 
     if args.abce:
         isleconfig.use_abce = True
@@ -238,6 +239,9 @@ if __name__ == "__main__":
     [general_rc_event_schedule, general_rc_event_damage, np_seeds, random_seeds] = setup.obtain_ensemble(1)   #Only one ensemble. This part will only be run locally (laptop).
 
     log = main(simulation_parameters, general_rc_event_schedule[0], general_rc_event_damage[0], np_seeds[0], random_seeds[0], save_iter)
+
+    if args.multiprocess:
+        return log
     
     """ Restore the log at the end of the single simulation run for saving and for potential further study """
     L = logger.Logger()
@@ -248,3 +252,5 @@ if __name__ == "__main__":
     CS = calibrationscore.CalibrationScore(L)
     score = CS.test_all()
     
+if __name__ == "__main__":
+    entry_point()
